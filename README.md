@@ -1,8 +1,9 @@
 # BookTracker API - NestJS avec Prisma
 > Bonne correction QUENTIN 🚀🚀🚀 📚 #livre #lecture
 
-[![Docker Ready](https://img.shields.io/badge/Dockerisé-de-fou-2496ED?style=flat&logo=docker)](https://docker.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)](https://www.docker.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Custom](https://img.shields.io/badge/merci%20pour%20cette%20ann%C3%A9e-GOAT%20🐐-FF6B6B?style=flat)]()
 
 Application de gestion de collections de livres avec authentification à deux facteurs et gestion des rôles.
 
