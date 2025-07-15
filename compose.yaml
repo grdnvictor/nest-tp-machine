@@ -1,33 +1,55 @@
 services:
   db:
-    image: postgres
+    image: postgres:17.4-alpine3.21
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - nest_data:/var/lib/postgresql/data
+      - booktracker_data:/var/lib/postgresql/data
+    networks:
+      - db-network
 
-  nest-app:
+  booktracker-api:
     build: .
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=development
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-      - PORT=3000
+      - JWT_SECRET=${JWT_SECRET}
+      - EMAIL_HOST=${EMAIL_HOST:-maildev}
+      - EMAIL_PORT=${EMAIL_PORT:-1025}
+      - EMAIL_USER=${EMAIL_USER:-}
+      - EMAIL_PASS=${EMAIL_PASS:-}
     depends_on:
       - db
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run start:dev
+    command: >
+      sh -c "
+        npm install --force &&
+        npm rebuild bcrypt --build-from-source &&
+        npx prisma migrate dev --name init &&
+        npx prisma generate &&
+        npx prisma db seed &&
+        exec npm run start:dev
+      "
+    networks:
+      - db-network
 
   maildev:
     image: maildev/maildev
     ports:
-      - "1080:1080"
-      - "1025:1025"
+      - "1080:1080"  # Interface web
+      - "1025:1025"  # Serveur SMTP
+    networks:
+      - db-network
 
 volumes:
-  nest_data: {}
+  booktracker_data: {}
+
+networks:
+  db-network:
+    name: db-network

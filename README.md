@@ -1,117 +1,85 @@
-z# API NestJS avec Prisma
+# BookTracker API - NestJS avec Prisma
+> Bonne correction QUENTIN 🚀🚀🚀 📚 #livre #lecture
 
-[![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat&logo=docker)](https://docker.com/)
-[![badge de fatigue](https://img.shields.io/badge/On%20préfère%20le%20JS/TS%20pitié-💀-F7DF1E?style=flat&logo=typescript&logoColor=white&labelColor=3178C6)](https://www.typescriptlang.org/)
+[![Docker Ready](https://img.shields.io/badge/Dockerisé-de-fou-2496ED?style=flat&logo=docker)](https://docker.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
 
-Ce projet est une application NestJS utilisant Prisma ORM pour interagir avec une base de données PostgreSQL.
+Application de gestion de collections de livres avec authentification à deux facteurs et gestion des rôles.
 
-## Technologies utilisées
+## 🔧 Installation
 
-- [NestJS](https://nestjs.com/) v11.0
-- [Prisma ORM](https://www.prisma.io/) v6.4
-- [PostgreSQL](https://www.postgresql.org/)
-- [Docker](https://www.docker.com/) et Docker Compose
-- [Swagger](https://swagger.io/) pour la documentation de l'API
-
-## Prérequis
-
-- Node.js (version 18 ou supérieure)
-- Docker et Docker Compose
-- npm ou yarn
-
-## Configuration
-
-1. Clonez ce dépôt
-2. Créez un fichier `.env` à la racine du projet avec les variables suivantes :
-
-```
-DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-POSTGRES_USER=user
-POSTGRES_PASSWORD=password
-POSTGRES_DB=dbname
+1. **Cloner le projet**
+```bash
+git clone git@github.com:grdnvictor/nest-tp-machine.git booktracker-api
+cd booktracker-api
 ```
 
-## Installation
+2. **Configuration**
+```bash
+cp .env.example .env
+# Modifier les variables dans .env si nécessaire
+```
+
+3. **Démarrage avec Docker**
+```bash
+docker-compose up -d
+```
+
+### Commandes Prisma utiles
 
 ```bash
-# Installation des dépendances
-npm install
+# Générer le client Prisma
+npm run db:generate
 
-# Génération du client Prisma
-npx prisma generate
+# Appliquer les migrations
+npm run db:migrate
+
+# Interface graphique
+npm run db:studio
+
+# Peupler la base avec des données d'exemple
+npm run db:seed
 ```
 
-## Exécution en développement
+## 📚 Documentation API
 
-### Avec Docker Compose
+Documentation Swagger disponible sur : `http://localhost:3000/api`
 
-```bash
-docker-compose up
-```
+## 🧪 Comptes de test
 
-Cela démarrera :
-- Un serveur PostgreSQL
-- L'application NestJS en mode développement
-- Un serveur MailDev pour tester les emails (accessible sur http://localhost:1080)
+Après le seed de la base de données :
 
-### Sans Docker
+**Administrateur**
+- Email : `admin@booktracker.com`
+- Mot de passe : `admin123`
 
-```bash
-# Mode développement avec hot reload
-npm run start:dev
+**Utilisateur**
+- Email : `user@booktracker.com`
+- Mot de passe : `user123`
 
-# Mode debug
-npm run start:debug
-```
+## 📧 Emails de développement
 
-## Structure du projet
+MailDev est inclus pour tester les emails en local :
+- Interface web : `http://localhost:1080`
+- Serveur SMTP : `localhost:1025`
 
-```
-├── prisma/             # Configuration et schéma Prisma
-├── src/                # Code source de l'application
-│   ├── app.controller.ts
-│   ├── app.module.ts
-│   ├── app.service.ts
-│   ├── main.ts
-│   └── prisma.service.ts
-├── compose.yaml        # Configuration Docker Compose
-├── Dockerfile          # Configuration Docker pour l'application
-└── package.json        # Dépendances et scripts npm
-```
-
-## Modèles de données
-
-Le projet contient actuellement le modèle suivant :
-
-### User
-- id: Int (clé primaire, auto-incrémenté)
-- email: String (unique)
-- password: String
-
-## Documentation API
-
-Une fois l'application démarrée, la documentation Swagger est disponible à l'adresse :
+## 📁 Structure du projet
 
 ```
-http://localhost:3000/api
+src/
+├── auth/
+│   ├── decorators/
+│   ├── dto/
+│   ├── guards/
+│   ├── auth.controller.ts
+│   └── auth.service.ts
+├── books/
+│   ├── dto/
+│   ├── books.controller.ts
+│   └── books.service.ts
+├── email/
+│   └── email.service.ts
+├── app.module.ts
+├── main.ts
+└── prisma.service.ts
 ```
-
-## Scripts disponibles
-
-```bash
-# Compilation
-npm run build
-
-# Démarrage en production
-npm run start:prod
-
-# Linting
-npm run lint
-
-# Formatage du code
-npm run format
-```
-
-## Licence
-
-Ce projet est sous licence [UNLICENSED](LICENSE).
